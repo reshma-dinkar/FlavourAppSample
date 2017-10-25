@@ -1,0 +1,64 @@
+apply plugin: 'com.android.application'
+
+android {
+    signingConfigs {
+        prodconfig {
+            keyAlias 'prodkey'
+            keyPassword 'prod123'
+            storeFile file('/Users/kuliza-304/FlavourSampleApp/ProdKeystore.jks')
+            storePassword 'prod123'
+        }
+        debugconfig {
+            keyAlias 'debugkey'
+            keyPassword 'debug123'
+            storeFile file('/Users/kuliza-304/FlavourSampleApp/DebugKeystore.jks')
+            storePassword 'debug123'
+        }
+    }
+    compileSdkVersion 26
+    flavorDimensions "versionCode"
+    buildToolsVersion "26.0.1"
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            signingConfig signingConfigs.prodconfig
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            resValue "string", "release_token", "123456"
+        }
+        debug {
+            minifyEnabled true
+            shrinkResources true
+            signingConfig signingConfigs.debugconfig
+            applicationIdSuffix '.dev'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            resValue "string", "debug_token", "654321"
+        }
+    }
+    productFlavors {
+        prod {
+            applicationId "com.example.flavoursampleapp.prod"
+            minSdkVersion 15
+            targetSdkVersion 26
+            versionCode 1
+            versionName "1.0"
+            resConfigs "en"
+            resValue "string", "app_name", "FlavourSample"
+        }
+
+        beta {
+            applicationId "com.example.flavoursampleapp.beta"
+            minSdkVersion 15
+            targetSdkVersion 26
+            versionCode 1
+            versionName "1.0"
+            resConfigs "en"
+            resValue "string", "app_name", "FlavourSample-Beta"
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+}
